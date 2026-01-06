@@ -1,0 +1,1 @@
+This file contains all the tasks related to Aritificial Intelligence Coursework.
