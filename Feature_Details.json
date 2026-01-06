@@ -1,0 +1,249 @@
+{
+  "id": {
+    "role": "ID",
+    "type": "Integer",
+    "description": "Unique patient identifier used for tracking records across the study. Not used for prediction modeling.",
+    "missing_values": "No",
+    "category": "Identifier"
+  },
+  "age": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Patient age in years at study enrollment. Age is a critical predictor of mortality in critically ill patients, with older patients typically facing higher risk. Range: typically 18-100 years.",
+    "missing_values": "No",
+    "category": "Demographics",
+    "clinical_significance": "Strong predictor of mortality; older age associated with increased risk"
+  },
+  "death": {
+    "role": "Target",
+    "type": "Continuous",
+    "description": "Binary indicator of death at any time up to National Death Index (NDI) data on December 31, 1994. Represents longer-term mortality outcome beyond hospital discharge. Values: 0=alive, 1=died.",
+    "missing_values": "No",
+    "category": "Target Variable",
+    "clinical_significance": "Long-term mortality outcome including post-discharge deaths"
+  },
+  "sex": {
+    "role": "Feature",
+    "type": "Categorical",
+    "description": "Biological sex of the patient. Categories: male, female. Sex can influence disease presentation, treatment response, and mortality risk in certain conditions.",
+    "missing_values": "No",
+    "category": "Demographics",
+    "clinical_significance": "May affect disease prognosis and treatment outcomes"
+  },
+  "hospdead": {
+    "role": "Target",
+    "type": "Binary",
+    "description": "In-hospital mortality indicator. Records whether patient died during hospitalization before discharge. Values: 0=survived to discharge, 1=died in hospital. This is a critical short-term outcome measure.",
+    "missing_values": "No",
+    "category": "Target Variable",
+    "clinical_significance": "Primary outcome for acute care prediction models; immediate mortality risk"
+  },
+  "slos": {
+    "role": "Other",
+    "type": "Continuous",
+    "description": "Days from study entry to hospital discharge. Measures length of stay after enrollment. Not used for prediction as it's only known post-outcome. Longer stays may indicate complications or slow recovery.",
+    "missing_values": "No",
+    "category": "Administrative",
+    "clinical_significance": "Outcome variable; indicates resource utilization but causes data leakage if used as predictor"
+  },
+  "d.time": {
+    "role": "Other",
+    "type": "Continuous",
+    "description": "Total days of follow-up from study entry to last observation or death. Used for survival analysis but not for binary classification prediction due to temporal leakage.",
+    "missing_values": "No",
+    "category": "Administrative",
+    "clinical_significance": "Follow-up duration; essential for survival analysis but not for admission-time prediction"
+  },
+  "dzgroup": {
+    "role": "Feature",
+    "type": "Categorical",
+    "description": "Detailed disease subcategory classification. Categories: ARF/MOSF with Sepsis (acute respiratory failure/multiple organ system failure with sepsis), CHF (congestive heart failure), COPD (chronic obstructive pulmonary disease), Cirrhosis, Colon Cancer, Coma, Lung Cancer, MOSF with Malignancy. Primary diagnosis strongly predicts mortality.",
+    "missing_values": "No",
+    "category": "Disease Classification",
+    "clinical_significance": "Primary diagnosis; different disease groups have vastly different mortality rates"
+  },
+  "dzclass": {
+    "role": "Feature",
+    "type": "Categorical",
+    "description": "Broader disease category grouping. Categories: ARF/MOSF (acute conditions), COPD/CHF/Cirrhosis (chronic conditions), Cancer, Coma. Provides higher-level disease classification for mortality stratification.",
+    "missing_values": "No",
+    "category": "Disease Classification",
+    "clinical_significance": "Major disease category; helps stratify baseline mortality risk"
+  },
+  "num.co": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Number of comorbidities (simultaneous diseases) present. Higher comorbidity count indicates greater disease burden and complexity, strongly associated with increased mortality risk. Typical range: 0-10+.",
+    "missing_values": "No",
+    "category": "Disease Severity",
+    "clinical_significance": "Higher comorbidity burden strongly predicts worse outcomes and mortality"
+  },
+  "edu": {
+    "role": "Feature",
+    "type": "Categorical",
+    "description": "Years of formal education completed. Socioeconomic indicator that may correlate with health literacy, access to care, and baseline health status. Categories typically include ranges like <12, 12, >12 years.",
+    "missing_values": "Yes",
+    "category": "Demographics",
+    "clinical_significance": "Socioeconomic proxy; may indicate health literacy and access to preventive care"
+  },
+  "income": {
+    "role": "Feature",
+    "type": "Categorical",
+    "description": "Annual household income level. Categories: under $11k, $11-$25k, $25-$50k, >$50k. Socioeconomic status affects access to healthcare, medication adherence, and overall health status.",
+    "missing_values": "Yes",
+    "category": "Demographics",
+    "clinical_significance": "Economic status may affect care access, medication compliance, and baseline health"
+  },
+  "scoma": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Glasgow Coma Scale score on day 3 of ICU admission. Measures level of consciousness (best response in eye opening, verbal, and motor domains). Range: 3 (deep coma) to 15 (fully alert). Lower scores indicate severe neurological impairment and higher mortality risk.",
+    "missing_values": "Yes",
+    "category": "Neurological Assessment",
+    "clinical_significance": "Critical neurological indicator; low scores predict high mortality"
+  },
+  "meanbp": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Mean arterial blood pressure (MAP) measured on day 3, in mmHg. Calculated as (systolic + 2×diastolic)/3. Normal range: 70-100 mmHg. MAP <65 indicates hypotension/shock requiring intervention. Critical marker of circulatory function and organ perfusion.",
+    "missing_values": "Yes",
+    "category": "Vital Signs",
+    "clinical_significance": "Essential perfusion marker; low MAP indicates shock and predicts organ failure"
+  },
+  "wblc": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "White blood cell count on day 3, measured in thousands per microliter (×10³/μL). Normal: 4-11. Elevated (>11) suggests infection/inflammation; very low (<4) may indicate immunosuppression or bone marrow dysfunction. Both extremes predict poor outcomes.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Hematology",
+    "clinical_significance": "Infection/inflammation marker; abnormal values indicate immune response or dysfunction"
+  },
+  "hrt": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Heart rate (pulse) on day 3, in beats per minute (bpm). Normal: 60-100 bpm. Tachycardia (>100) may indicate stress, fever, sepsis, or shock. Bradycardia (<60) may indicate cardiac conduction problems or medication effects.",
+    "missing_values": "Yes",
+    "category": "Vital Signs",
+    "clinical_significance": "Cardiac function and stress response indicator; abnormal rates predict complications"
+  },
+  "resp": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Respiratory rate on day 3, breaths per minute. Normal: 12-20. Tachypnea (>20) indicates respiratory distress, metabolic acidosis, or compensatory response. Critical marker of respiratory and metabolic function.",
+    "missing_values": "Yes",
+    "category": "Vital Signs",
+    "clinical_significance": "Respiratory status marker; elevated rates indicate distress or metabolic compensation"
+  },
+  "temp": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Body temperature on day 3, in degrees Celsius. Normal: 36.5-37.5°C. Fever (>38°C) suggests infection. Hypothermia (<36°C) may indicate septic shock or severe illness. Both extremes predict mortality.",
+    "missing_values": "No",
+    "category": "Vital Signs",
+    "clinical_significance": "Infection indicator and metabolic status marker; abnormal values predict poor outcomes"
+  },
+  "pafi": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "PaO₂/FiO₂ ratio on day 3. Ratio of arterial oxygen partial pressure to fraction of inspired oxygen. Normal: >300. <300 indicates acute lung injury; <200 indicates ARDS (acute respiratory distress syndrome). Critical indicator of lung function and oxygenation.",
+    "missing_values": "Yes",
+    "category": "Respiratory Function",
+    "clinical_significance": "Lung oxygenation capacity; low values indicate respiratory failure and high mortality"
+  },
+  "alb": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Serum albumin level on day 3, in g/dL. Normal: 3.5-5.0. Low albumin (hypoalbuminemia) indicates poor nutritional status, liver dysfunction, or severe illness. Strong predictor of mortality.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Chemistry",
+    "clinical_significance": "Nutritional and liver function marker; low levels predict poor outcomes"
+  },
+  "bili": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Bilirubin level on day 3, in mg/dL. Normal: <1.2. Elevated bilirubin indicates liver dysfunction, hemolysis, or biliary obstruction. High levels suggest organ failure.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Chemistry",
+    "clinical_significance": "Liver function indicator; elevated levels indicate hepatic dysfunction"
+  },
+  "crea": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Serum creatinine level on day 3, in mg/dL. Normal: 0.6-1.2. Elevated creatinine indicates kidney dysfunction or acute kidney injury. Critical marker of renal function and fluid balance.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Chemistry",
+    "clinical_significance": "Kidney function marker; elevated levels indicate renal failure risk"
+  },
+  "sod": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Serum sodium concentration on day 3, in mEq/L. Normal: 135-145. Hyponatremia (<135) or hypernatremia (>145) indicate electrolyte imbalance affecting cellular function and neurological status.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Electrolytes",
+    "clinical_significance": "Electrolyte balance indicator; abnormalities affect cardiac and neurological function"
+  },
+  "ph": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Arterial blood pH on day 3. Normal: 7.35-7.45. Acidosis (<7.35) or alkalosis (>7.45) indicate metabolic or respiratory dysfunction. Critical marker of acid-base balance.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Blood Gas",
+    "clinical_significance": "Acid-base status; abnormal pH indicates metabolic or respiratory failure"
+  },
+  "glucose": {
+    "role": "Feature",
+    "type": "Integer",
+    "description": "Blood glucose level on day 3, in mg/dL. Normal: 70-100 (fasting). Hyperglycemia (>140) common in critically ill; hypoglycemia (<70) dangerous. Both extremes predict complications.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Chemistry",
+    "clinical_significance": "Metabolic status; abnormal glucose indicates stress response or metabolic dysfunction"
+  },
+  "bun": {
+    "role": "Feature",
+    "type": "Integer",
+    "description": "Blood urea nitrogen on day 3, in mg/dL. Normal: 7-20. Elevated BUN indicates kidney dysfunction, dehydration, or increased protein catabolism. Marker of renal function and fluid status.",
+    "missing_values": "Yes",
+    "category": "Laboratory - Chemistry",
+    "clinical_significance": "Renal function and hydration status; elevated levels indicate kidney dysfunction"
+  },
+  "urine": {
+    "role": "Feature",
+    "type": "Integer",
+    "description": "Urine output on day 3, typically in mL per time period. Low urine output (oliguria) indicates kidney dysfunction or inadequate perfusion. Critical marker of renal function and fluid balance.",
+    "missing_values": "Yes",
+    "category": "Fluid Balance",
+    "clinical_significance": "Kidney function and perfusion marker; low output indicates acute kidney injury"
+  },
+  "adlp": {
+    "role": "Feature",
+    "type": "Categorical",
+    "description": "Activities of Daily Living index (patient-reported) on day 3. Assesses functional independence in basic tasks (bathing, dressing, toileting, transferring, feeding). Higher scores indicate better baseline functional status.",
+    "missing_values": "Yes",
+    "category": "Functional Status",
+    "clinical_significance": "Baseline functional independence; higher values indicate better pre-illness status"
+  },
+  "adls": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Activities of Daily Living index (surrogate/family-reported) on day 3. Alternative assessment when patient cannot self-report. Predicts recovery potential and mortality.",
+    "missing_values": "Yes",
+    "category": "Functional Status",
+    "clinical_significance": "Baseline function proxy; indicates pre-hospitalization independence level"
+  },
+  "sfdm2": {
+    "role": "Target",
+    "type": "Categorical",
+    "description": "Functional disability level at 2 months post-admission, scored 1-5 (5=highest severity). Based on Sickness Impact Profile (SIP) questionnaires. Alternative outcome measure to mortality.",
+    "missing_values": "Yes",
+    "category": "Target Variable",
+    "clinical_significance": "Longer-term functional outcome; assesses quality of survival beyond mortality"
+  },
+  "adlsc": {
+    "role": "Feature",
+    "type": "Continuous",
+    "description": "Imputed ADL score calibrated to surrogate reports. Standardized version filling gaps where direct patient or surrogate reports unavailable. Used for consistent functional status assessment.",
+    "missing_values": "No",
+    "category": "Functional Status",
+    "clinical_significance": "Standardized baseline function measure; predicts recovery trajectory"
+  }
+}
