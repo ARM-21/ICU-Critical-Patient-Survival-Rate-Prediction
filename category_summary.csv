@@ -1,0 +1,16 @@
+Category,Features,With Missing,Missing %,Examples
+Administrative,2,0,0.0%,"slos, d.time"
+Demographics,4,2,50.0%,"age, sex, edu"
+Disease Classification,2,0,0.0%,"dzgroup, dzclass"
+Disease Severity,1,0,0.0%,num.co
+Fluid Balance,1,1,100.0%,urine
+Functional Status,3,2,66.7%,"adlp, adls, adlsc"
+Identifier,1,0,0.0%,id
+Laboratory - Blood Gas,1,1,100.0%,ph
+Laboratory - Chemistry,5,5,100.0%,"alb, bili, crea"
+Laboratory - Electrolytes,1,1,100.0%,sod
+Laboratory - Hematology,1,1,100.0%,wblc
+Neurological Assessment,1,1,100.0%,scoma
+Respiratory Function,1,1,100.0%,pafi
+Target Variable,3,1,33.3%,"death, hospdead, sfdm2"
+Vital Signs,4,3,75.0%,"meanbp, hrt, resp"
