@@ -1,16 +1,18 @@
-# Smart Data Discovery — Predictive Application
+# ICU-Critical-Patient-Survival-Rate-Prediction
 
-This project is a predictive application and analysis suite for prototyping classification models on real-world datasets. It focuses on building, evaluating, and comparing models for decision-support tasks such as clinical outcome prediction and credit decision experiments.
+This repository focuses on an ICU survival prediction application: building, evaluating, and comparing classifiers to predict short-term survival for critical patients using the SUPPORT2 dataset. The codebase also contains additional example experiments (e.g., credit/loan analyses), but the primary application is ICU survival prediction.
 
 **Application purpose**
 
-- Provide reproducible pipelines to preprocess data, train candidate classifiers, and evaluate model performance for decision-support tasks.
-- Support rapid comparison of models to inform selection based on performance, calibration, and practical constraints.
+- Provide reproducible pipelines to preprocess SUPPORT2 data, train candidate classifiers, and evaluate model performance for clinical decision-support.
+- Enable model comparison based on performance, calibration, and practical constraints specific to ICU outcome prediction.
 
 **Contents & Key files**
-- `support2_modeling.py`: end-to-end modeling script for the SUPPORT2 clinical dataset.
-- `support2-1.csv`: SUPPORT2 cohort data used for critical-patient survival experiments.
-- `loan_data.csv`, `loan.csv`, `loan_model_metrics.csv`: datasets and recorded model metrics for loan/credit experiments.
+- `Critical_Patient_Survival_Implementation.ipynb`: notebook with the clinical prediction analysis and results.
+- `support2-1.csv`: SUPPORT2 cohort data used for the ICU survival experiments.
+- `support2_modeling.py` (root): end-to-end modeling script comparing Logistic Regression, KNN, Decision Tree, and Random Forest.
+- `app.py`: example application or experiment runner.
+- `Column_Visualization.ipynb`, `Feature_Details.json`, `category_summary.csv`: helper notebooks and artifacts used in analysis and visualization.
 - `requirements.txt`: Python dependencies.
 
 **Implemented models**
