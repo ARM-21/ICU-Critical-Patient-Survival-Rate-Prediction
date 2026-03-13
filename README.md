@@ -1,63 +1,73 @@
 # ICU-Critical-Patient-Survival-Rate-Prediction
 
-This repository focuses on an ICU survival prediction application: building, evaluating, and comparing classifiers to predict short-term survival for critical patients using the SUPPORT2 dataset. The codebase also contains additional example experiments (e.g., credit/loan analyses), but the primary application is ICU survival prediction.
+This project predicts ICU patient mortality risk using the SUPPORT2 dataset. It includes a deployable Streamlit web app, notebooks for analysis, and supporting metadata files used during model development and interpretation.
 
-**Application purpose**
+**Project objective**
 
-- Provide reproducible pipelines to preprocess SUPPORT2 data, train candidate classifiers, and evaluate model performance for clinical decision-support.
-- Enable model comparison based on performance, calibration, and practical constraints specific to ICU outcome prediction.
+- Estimate in-hospital mortality risk from patient demographics, diagnosis group, vital signs, and laboratory features.
+- Provide an interactive clinical decision-support demo through a web interface.
+- Document feature analysis and modeling decisions in notebooks.
 
-**Contents & Key files**
-- `Critical_Patient_Survival_Implementation.ipynb`: notebook with the clinical prediction analysis and results.
-- `support2-1.csv`: SUPPORT2 cohort data used for the ICU survival experiments.
-- `support2_modeling.py` (root): end-to-end modeling script comparing Logistic Regression, KNN, Decision Tree, and Random Forest.
-- `app.py`: example application or experiment runner.
-- `Column_Visualization.ipynb`, `Feature_Details.json`, `category_summary.csv`: helper notebooks and artifacts used in analysis and visualization.
-- `requirements.txt`: Python dependencies.
+**What is implemented**
 
-**Implemented models**
+- A trained machine-learning artifact loaded by `app.py` from `model.pkl`.
+- Interactive patient-form input and risk prediction in Streamlit.
+- Probability-based risk categories: Low, Moderate, High, and Critical.
+- Display of model performance metrics and top feature-importance values.
 
-The project includes implementations and comparisons of common supervised classifiers:
-- Logistic Regression
-- K-Nearest Neighbours (KNN)
-- Decision Tree
-- Random Forest
+**Folder contents (this `coursework` folder)**
 
-**Implementation & pipeline details**
+- `app.py`: Streamlit application entrypoint.
+- `model.pkl`: serialized model artifact used at runtime.
+- `support2-1.csv`: primary dataset for ICU prediction experiments.
+- `Critical_Patient_Survival_Implementation.ipynb`: main end-to-end notebook for data preparation, training, and evaluation.
+- `Column_Visualization.ipynb`: feature and column-level visual analysis notebook.
+- `Feature_Details.json`: feature metadata and mappings used during analysis.
+- `category_summary.csv`: summarized category-level output used for interpretation.
+- `requirements.txt`: Python dependencies for local run and Streamlit deployment.
+- `LICENSE`: MIT license text.
+- `README.md`: project documentation.
 
-- Data preparation: remove identifiers and leakage columns, handle missing values, and split into features/target.
-- Preprocessing pipeline: median imputation + scaling for numeric features; most-frequent imputation + one-hot encoding for categorical features. Implemented as a scikit-learn `ColumnTransformer` in `support2_modeling.py`.
-- Training: stratified 80/20 train/test split; models trained via a scikit-learn `Pipeline` combining preprocessing and estimator.
-- Evaluation: accuracy, precision, recall, F1-score, ROC AUC, and Brier score are computed for each candidate model. Results are printed and can be saved to CSV for comparison.
+**Model and prediction workflow**
 
-**Model selection rationale**
+1. User enters patient values in the app form.
+2. Inputs are converted to a single-row dataframe.
+3. Categorical fields are one-hot encoded and aligned to training feature columns.
+4. Scaler from `model.pkl` transforms the aligned input.
+5. Classifier from `model.pkl` outputs mortality probability and class.
+6. App shows risk percentage, risk level, and top feature-importance table.
 
-- Prioritize models with strong ROC AUC and balanced precision/recall for the class of interest, especially for imbalanced datasets.
-- Use Brier score to assess calibration when probability estimates matter for downstream decisions.
-- Consider interpretability and computational cost when finalizing a deployed model (Decision Trees for interpretability, Random Forests for performance, Logistic Regression for simplicity and calibration).
+**How to run locally**
 
-**Reproducing experiments**
+1. Open terminal in `coursework/`.
+2. Create and activate a virtual environment.
+3. Install dependencies.
+4. Run Streamlit.
 
-1. Create and activate a virtual environment, then install dependencies:
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-   ```bash
-   python -m venv .venv
-   source .venv/Scripts/activate   # Windows (Git Bash / MSYS) or use Activate.ps1 for PowerShell
-   pip install -r requirements.txt
-   ```
+For PowerShell activation on Windows:
 
-2. Run the SUPPORT2 modeling script:
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-   ```bash
-   python support2_modeling.py
-   ```
+**Deployment notes (Streamlit Cloud)**
 
-3. Open the notebooks to inspect loan experiments and other analyses; check `loan_model_metrics.csv` for saved comparisons.
+- Set app file to `app.py`.
+- Ensure deployment root contains `app.py`, `model.pkl`, and `requirements.txt`.
+- Keep `scikit-learn` version in `requirements.txt` aligned with the version used to create `model.pkl`.
+- If you rebuild the model, regenerate `model.pkl` and commit it before redeploying.
 
-**License & attribution**
+**Data and usage disclaimer**
 
-This project is provided under the MIT License. See the `LICENSE` file and replace the owner placeholder before publishing.
+This project is for educational and research demonstration purposes. Predictions are not a substitute for clinical judgment.
 
-**Questions or updates**
+**License**
 
-If you'd like the README to include a table of model metrics, deployment guidance, or a `CONTRIBUTING.md`, tell me which and I will add it.
+Licensed under MIT. See `LICENSE`.
