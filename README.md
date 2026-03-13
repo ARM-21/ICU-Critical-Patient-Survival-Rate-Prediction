@@ -1,77 +1,61 @@
-# Smart Data Discovery — Coursework
+# Smart Data Discovery — Predictive Application
 
-This repository contains coursework, notebooks, datasets, and scripts used for the Smart Data Discovery project and related assignments.
+This project is a predictive application and analysis suite for prototyping classification models on real-world datasets. It focuses on building, evaluating, and comparing models for decision-support tasks such as clinical outcome prediction and credit decision experiments.
 
-**Project:** Smart Data Discovery — AI / Data Science coursework and experiments
+**Application purpose**
 
-**Scope:** A collection of Jupyter notebooks, Python scripts, and CSV datasets demonstrating data preprocessing, exploratory analysis, modeling, and evaluation for course assignments.
+- Provide reproducible pipelines to preprocess data, train candidate classifiers, and evaluate model performance for decision-support tasks.
+- Support rapid comparison of models to inform selection based on performance, calibration, and practical constraints.
 
-**Contents & Highlights**
-- **Description:** Notebooks and scripts covering classification, regression, evaluation metrics, and data visualization.
-- **Key files:**
-	- `requirements.txt`: Python dependencies
-	- `loan_model_metrics.csv`, `loan_data.csv`, `loan.csv`: example datasets and results
-	- Notebooks: many `*.ipynb` files demonstrating experiments (decisionTree.ipynb, support2_modeling.py, etc.)
+**Contents & Key files**
+- `support2_modeling.py`: end-to-end modeling script for the SUPPORT2 clinical dataset.
+- `support2-1.csv`: SUPPORT2 cohort data used for critical-patient survival experiments.
+- `loan_data.csv`, `loan.csv`, `loan_model_metrics.csv`: datasets and recorded model metrics for loan/credit experiments.
+- `requirements.txt`: Python dependencies.
 
-**Getting Started**
+**Implemented models**
 
-1. Clone the repository.
-2. Create a Python virtual environment and activate it:
+The project includes implementations and comparisons of common supervised classifiers:
+- Logistic Regression
+- K-Nearest Neighbours (KNN)
+- Decision Tree
+- Random Forest
 
-	 - Windows (PowerShell):
+**Implementation & pipeline details**
 
-		 ```powershell
-		 python -m venv .venv
-		 .\.venv\Scripts\Activate.ps1
-		 ```
+- Data preparation: remove identifiers and leakage columns, handle missing values, and split into features/target.
+- Preprocessing pipeline: median imputation + scaling for numeric features; most-frequent imputation + one-hot encoding for categorical features. Implemented as a scikit-learn `ColumnTransformer` in `support2_modeling.py`.
+- Training: stratified 80/20 train/test split; models trained via a scikit-learn `Pipeline` combining preprocessing and estimator.
+- Evaluation: accuracy, precision, recall, F1-score, ROC AUC, and Brier score are computed for each candidate model. Results are printed and can be saved to CSV for comparison.
 
-	 - macOS / Linux:
+**Model selection rationale**
 
-		 ```bash
-		 python3 -m venv .venv
-		 source .venv/bin/activate
-		 ```
+- Prioritize models with strong ROC AUC and balanced precision/recall for the class of interest, especially for imbalanced datasets.
+- Use Brier score to assess calibration when probability estimates matter for downstream decisions.
+- Consider interpretability and computational cost when finalizing a deployed model (Decision Trees for interpretability, Random Forests for performance, Logistic Regression for simplicity and calibration).
 
-3. Install dependencies:
+**Reproducing experiments**
 
-	 ```bash
-	 pip install -r requirements.txt
-	 ```
+1. Create and activate a virtual environment, then install dependencies:
 
-4. Open notebooks with Jupyter or VS Code and run cells for exploration and training.
+   ```bash
+   python -m venv .venv
+   source .venv/Scripts/activate   # Windows (Git Bash / MSYS) or use Activate.ps1 for PowerShell
+   pip install -r requirements.txt
+   ```
 
-**Usage & Typical Workflows**
+2. Run the SUPPORT2 modeling script:
 
-- Exploratory analysis: open the appropriate notebook (e.g., `decisionTree.ipynb`) and run the cells.
-- Training models: run the modeling notebooks or Python scripts (search for files named `*_modeling` or `support2_modeling.py`).
-- Evaluating models: results and metrics are saved in CSV files such as `loan_model_metrics.csv`.
+   ```bash
+   python support2_modeling.py
+   ```
 
-**Project Structure (selected)**
-- `coursework/` — coursework-specific notebooks and helper files.
-- `week-*` folders — tutorial notebooks and practice exercises.
-- `scraping/` — files related to web scraping experiments.
+3. Open the notebooks to inspect loan experiments and other analyses; check `loan_model_metrics.csv` for saved comparisons.
 
-**Data & Privacy**
+**License & attribution**
 
-Datasets included are intended for coursework and learning. If any dataset contains sensitive or personal data, remove or anonymize it before sharing publicly.
+This project is provided under the MIT License. See the `LICENSE` file and replace the owner placeholder before publishing.
 
-**License**
+**Questions or updates**
 
-This project is licensed under the MIT License — see the included `LICENSE` file for the full text. Replace the license owner placeholder in `LICENSE` with the appropriate name or organization.
-
-**How to Contribute**
-
-- If you'd like to contribute improvements, open an issue or send a pull request with a clear description of changes.
-- Keep notebooks reproducible: include environment requirements, and prefer scripts for long-running training.
-
-**Contact & Attribution**
-
-For questions or collaboration requests, add a note in an issue or contact the repository owner. Acknowledge course instructors or datasets where applicable.
-
-**Next steps**
-- Replace placeholder owner name in `LICENSE`.
-- Optionally add a short `CONTRIBUTING.md` describing contribution expectations and code style.
-
----
-
-Version: 1.0 — README drafted and added license (update owner as needed).
+If you'd like the README to include a table of model metrics, deployment guidance, or a `CONTRIBUTING.md`, tell me which and I will add it.
